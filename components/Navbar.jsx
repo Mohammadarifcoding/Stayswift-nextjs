@@ -1,9 +1,12 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { getAllHotels } from "@/backend/queries";
+import { auth } from "@/auth";
+import Logout from "./auth/Logout";
+import { Suspense } from "react";
 
 const Navbar = async({sidemenu = true}) => {
+
   return (
     <nav>
     <Link href="/">
@@ -30,10 +33,29 @@ const Navbar = async({sidemenu = true}) => {
       <li>
         <Link href="/bookings">Bookings</Link>
       </li>
-
+{/* 
       <li>
-        <Link href="/login" className="login">Login</Link>
-      </li>
+        {
+          session?.user ? (
+           <div className="flex items-center ">
+                 <span className="mx-1">{session?.user?.name}</span>
+                 <span>| </span>
+              <Logout/>
+           </div>
+          ) : (
+       <Link href="/login" className="login">Login</Link>
+          )
+        }
+  
+      </li> */}
+      <Suspense fallback={    <li>
+           <div className="flex items-center ">
+                 <span className="mx-1">Loading</span>
+                 <span>| </span>
+           </div>
+      </li>}>
+        <ShowUser />
+      </Suspense>
     </ul>
 }
    
@@ -42,3 +64,25 @@ const Navbar = async({sidemenu = true}) => {
 }
 
 export default Navbar
+
+
+
+export const ShowUser =async()=>{
+   const session = await auth()
+  return (
+    <li>
+        {
+          session?.user ? (
+           <div className="flex items-center ">
+                 <span className="mx-1">{session?.user?.name}</span>
+                 <span>| </span>
+              <Logout/>
+           </div>
+          ) : (
+       <Link href="/login" className="login">Login</Link>
+          )
+        }
+  
+      </li>
+  )
+}

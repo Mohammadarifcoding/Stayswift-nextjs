@@ -1,6 +1,33 @@
+"use client"
+
+
+import { signInBycredential } from "@/backend/actions/authentication";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
 const LoginForm = () => {
+  const [error,setError] = useState("")
+  const router = useRouter()
+  async function Submit(event) {
+    event.preventDefault()
+    try{
+      const formData = new FormData(event.currentTarget);
+      const response = await signInBycredential(formData)
+      console.log(response)
+      if(!!response?.error){
+       setError(response.error.message)
+      }
+      else{
+        router.push("/bookings")
+      }
+    }catch(e){
+       setError(e.message)
+    }
+  }
   return (
-    <form className="login-form">
+    <>
+    {error && <p className="text-lg text-red-500 text-center">{error}</p>}
+     <form onSubmit={Submit} className="login-form">
       <div>
         <label htmlFor="email">Email Address</label>
         <input type="email" name="email" id="email" />
@@ -15,6 +42,11 @@ const LoginForm = () => {
         Login
       </button>
     </form>
+    
+    
+    
+    </>
+   
   );
 };
 
