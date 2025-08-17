@@ -22,7 +22,11 @@ const HotelListPage = ({
         <div className="container grid grid-cols-12">
           <Filter />
           <Suspense fallback={<HotelCardSkeleton />}>
-            <HotelList />
+            <HotelList
+              destination={destination}
+              checkin={checkin}
+              checkout={checkout}
+            />
           </Suspense>
         </div>
       </section>

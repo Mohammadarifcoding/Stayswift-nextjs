@@ -5,7 +5,12 @@ import HotelRating, { HotelRatingSkeleton } from "./HotelRating";
 import Link from "next/link";
 import HotelReviewNumber, { HotelReviewNumberSkeleton } from "./HotelReviewNumber";
 
-const HotelSummaryInfo = ({fromListPage, info}) => {
+const HotelSummaryInfo = ({fromListPage, info, checkin, checkout}) => {
+   let params = ""
+
+   if(checkin && checkout) params = `?checkin=${checkin}&checkout=${checkout}`
+   console.log("here",params,checkin,checkout)
+
   return (
     <>
       <div className={fromListPage ? "flex-1" : "flex-1 container"}>
@@ -18,6 +23,7 @@ const HotelSummaryInfo = ({fromListPage, info}) => {
           <Suspense fallback={<HotelReviewNumberSkeleton/>}>
             <HotelReviewNumber id={info?.id} />
           </Suspense>
+          {info?.isBooked && <span className="bg-red-500 p-1 rounded-md">Booked</span>}
         </div>
         <div>
             <span className="bg-yellow-300 p-1 rounded-md">{info?.propertyCategory} Star Property</span>
@@ -28,7 +34,7 @@ const HotelSummaryInfo = ({fromListPage, info}) => {
         <h2 className="text-2xl font-bold text-right">${(info?.highRate + info?.lowRate)/2}/night</h2>
         <p className=" text-right">Per Night for 1 Room</p>
         {
-          fromListPage ? (<Link href={`/hotels/${info?._id}`} className="btn-primary ">Details</Link>) : (<button className="btn-primary ">Book</button>)
+          fromListPage ? (<Link href={`/hotels/${info?._id}${params}`} className="btn-primary ">Details</Link>) : (<Link href={`/hotels/${info?._id}/payment${params}`}><button disabled={info?.isBooked} className="btn-primary ">{info?.isBooked ? "Booked" : "Book Now"}</button></Link>)
         }
       </div>
     </>

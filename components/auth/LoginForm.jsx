@@ -2,11 +2,12 @@
 
 
 import { signInBycredential } from "@/backend/actions/authentication";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const LoginForm = () => {
   const [error,setError] = useState("")
+  const searchParams = useSearchParams()
   const router = useRouter()
   async function Submit(event) {
     event.preventDefault()
@@ -18,7 +19,13 @@ const LoginForm = () => {
        setError(response.error.message)
       }
       else{
-        router.push("/bookings")
+  //        const cookieStore = cookies();
+  // const redirectUrl = cookieStore.get("redirectUrl")?.value || "/";
+  // cookieStore.delete("redirectUrl");
+  //       router.push(redirectUrl)
+
+        const redirectUrl = searchParams.get("redirectUrl") || "/";
+        router.push(redirectUrl)
       }
     }catch(e){
        setError(e.message)
