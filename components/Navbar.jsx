@@ -33,21 +33,6 @@ const Navbar = async({sidemenu = true}) => {
       <li>
         <Link href="/bookings">Bookings</Link>
       </li>
-{/* 
-      <li>
-        {
-          session?.user ? (
-           <div className="flex items-center ">
-                 <span className="mx-1">{session?.user?.name}</span>
-                 <span>| </span>
-              <Logout/>
-           </div>
-          ) : (
-       <Link href="/login" className="login">Login</Link>
-          )
-        }
-  
-      </li> */}
       <Suspense fallback={    <li>
            <div className="flex items-center ">
                  <span className="mx-1">Loading</span>

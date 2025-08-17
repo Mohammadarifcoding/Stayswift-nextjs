@@ -1,8 +1,11 @@
 import { auth } from "@/auth";
-import ProfileInfo from "@/components/user/ProfileInfo";
+import ProfileInfo, {
+  ProfileInfoSkeleton,
+} from "@/components/user/ProfileInfo";
 import PastBooking from "@/components/user/booking/PastBooking";
 import UpcomingBooking from "@/components/user/booking/UpcomingBooking";
 import { redirect } from "next/navigation";
+import { Suspense } from "react";
 
 const BookingsPage = async () => {
   const session = await auth();
@@ -13,7 +16,9 @@ const BookingsPage = async () => {
     <>
       <section className="mt-[100px]">
         <div className="container">
-          <ProfileInfo />
+          <Suspense fallback={<ProfileInfoSkeleton />}>
+            <ProfileInfo />
+          </Suspense>
         </div>
       </section>
       <section>

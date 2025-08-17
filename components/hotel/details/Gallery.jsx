@@ -1,16 +1,34 @@
+import { getHotelById } from "@/backend/queries";
 import Image from "next/image";
 
-const Gallery = () => {
+const Gallery = async({hotelId}) => {
+  const data = await getHotelById(hotelId)
+  const gallery = data?.gallery
+  const newGallery = [...gallery];
+  newGallery.shift();
+
   return (
     <section className="container">
       <div className="grid grid-cols-2 imageshowCase">
-        <Image src="./assets/images/1.png" className="h-[400px]" alt="" />
+      <Image
+          src={data?.gallery[0]}
+          className="h-[400px]"
+          alt="Main Pic"
+          width={400}
+          height={400} quality={100} priority loading="eager"/>
 
         <div className="grid grid-cols-2 grid-rows-2 h-[400px]">
-          <Image src="./assets/images/2.png" alt="" />
-          <Image src="./assets/images/3.png" alt="" />
-          <Image src="./assets/images/4.png" alt="" />
-          <Image src="./assets/images/5.png" alt="" />
+          {
+            newGallery.map((image) => (
+              <Image
+                key={image}
+                src={image}
+                className="h-[400px]"
+                alt="Sub Pics"
+                width={400}
+                height={400} />
+            ))
+          }
         </div>
       </div>
     </section>
